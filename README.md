@@ -1,26 +1,27 @@
 # Shared-Model
 
+## Train
 ```
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Stairway-H1-v0 --headless --seed 42 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Stairway-H1-v0 --headless --seed 123 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Stairway-H1-v0 --headless --seed 456 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Stairway-H1-v0 --headless --seed 789 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Stairway-H1-v0 --headless --seed 999 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Stairway-H1-v0 --headless --seed 42 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Stairway-H1-v0 --headless --seed 123 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Stairway-H1-v0 --headless --seed 456 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Stairway-H1-v0 --headless --seed 789 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Stairway-H1-v0 --headless --seed 999 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 123 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 456 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 789 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./separate_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 999 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 123 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 456 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 789 && \
-/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./shared_train.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 999
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Stairway-H1-v0 --headless --seed 42 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Stairway-H1-v0 --headless --seed 123 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Stairway-H1-v0 --headless --seed 456 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Stairway-H1-v0 --headless --seed 789 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Stairway-H1-v0 --headless --seed 999 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Stairway-H1-v0 --headless --seed 42 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Stairway-H1-v0 --headless --seed 123 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Stairway-H1-v0 --headless --seed 456 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Stairway-H1-v0 --headless --seed 789 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Stairway-H1-v0 --headless --seed 999 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 123 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 456 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 789 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/dac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 999 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 123 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 456 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 789 && \
+/home/whitebot/Workspace/Research/IsaacLab/isaaclab.sh -p ./1_train/uac.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 999
 ```
 
 ```
