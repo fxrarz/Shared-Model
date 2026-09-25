@@ -1,0 +1,24 @@
+{
+    "os": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.10.16",
+    "heartbeatAt": "2026-09-22T06:37:25.632595",
+    "startedAt": "2026-09-22T06:37:24.072846",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "gpu_count": 1,
+    "cpu_count": 32,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/home/whitebot/Workspace/Research/Shared-Model/UAC_Loss_Ablation.py",
+    "codePath": "UAC_Loss_Ablation.py",
+    "git": {
+        "remote": "https://github.com/fxrarz/Shared-Model.git",
+        "commit": "2cf73d1827ee2b77ab90c4b43e20f7ba6cc6af79"
+    },
+    "email": "farazahmed3071@gmail.com",
+    "root": "/home/whitebot/Workspace/Research/Shared-Model",
+    "host": "whitebot-Predator-PHN16-72",
+    "username": "whitebot",
+    "executable": "/home/whitebot/miniconda3/envs/newisaaclab/bin/python3"
+}
