@@ -1,18 +1,12 @@
-# python3 UAC_Arch_Ablation.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 --arch 2.0
-# python3 UAC_Arch_Ablation.py --task Isaac-Velocity-Flat-H1-v0 --headless --seed 42 --arch 1.0
-# python3 UAC_Arch_Ablation.py --task Isaac-Stairway-H1-v0 --headless --seed 42 --arch 2.0
-# python3 UAC_Arch_Ablation.py --task Isaac-Stairway-H1-v0 --headless --seed 42 --arch 1.0
-
 import argparse
 import sys
 from isaaclab.app import AppLauncher
 
 parser = argparse.ArgumentParser(description="Train an RL agent with skrl.")
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
-parser.add_argument("--task", type=str, default="Isaac-Velocity-Flat-H1-v0", help="Name of the task.")
+parser.add_argument("--task", type=str, default="Isaac-Slope-H1-v0", help="Name of the task.")
 parser.add_argument("--seed", type=int, default=42, help="Seed used for the environment")
-parser.add_argument("--arch", type=str, default="2.0", help="Arch used for training (1.0 or 2.0)")
-parser.add_argument("--value_loss_scale", type=float, default=1.0, help="Value loss scale")
+parser.add_argument("--checkpoint", type=str, default=None, help="Checkpoint to load")
 
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
@@ -36,9 +30,8 @@ from skrl.utils import set_seed
 from skrl.resources.preprocessors.torch import RunningStandardScaler
 from skrl.resources.schedulers.torch import KLAdaptiveRL
 from skrl.agents.torch.ppo import PPO
-set_seed(42)
 
-# check for minimum supported skrl version
+# Check for minimum supported skrl version
 SKRL_VERSION = "1.3.0"
 if version.parse(skrl.__version__) < version.parse(SKRL_VERSION):
     skrl.logger.error(
@@ -55,55 +48,25 @@ from isaaclab_rl.skrl import SkrlVecEnvWrapper
 import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
-class UACAblationModel(GaussianMixin, DeterministicMixin, Model):
-    def __init__(self, observation_space, action_space, device, arch="2.0", clip_actions=False,
-                 clip_log_std=True, min_log_std=-5, max_log_std=2, reduction="sum"):
+class Shared(GaussianMixin, DeterministicMixin, Model):
+    def __init__(self, observation_space, action_space, device, clip_actions=False,
+                 clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum"):
         Model.__init__(self, observation_space, action_space, device)
         GaussianMixin.__init__(self, clip_actions, clip_log_std, min_log_std, max_log_std, reduction)
         DeterministicMixin.__init__(self, clip_actions)
         
-        self.arch = str(arch)
-        
-        if self.arch == "2.0":
-            # Shared backbone up to 200 units, then separate 100-unit layers for policy and value
-            self.shared_net = nn.Sequential(
-                nn.Linear(self.num_observations, 400),
-                nn.ELU(),
-                nn.Linear(400, 200),
-                nn.ELU()
-            )
-            self.policy_net = nn.Sequential(
-                nn.Linear(200, 100),
-                nn.ELU()
-            )
-            self.value_net = nn.Sequential(
-                nn.Linear(200, 100),
-                nn.ELU()
-            )
-            head_input_dim = 100
-        else:
-            # "1.0": Shared backbone up to 400 units, then separate branches
-            self.shared_net = nn.Sequential(
-                nn.Linear(self.num_observations, 400),
-                nn.ELU()
-            )
-            self.policy_net = nn.Sequential(
-                nn.Linear(400, 200),
-                nn.ELU(),
-                nn.Linear(200, 100),
-                nn.ELU()
-            )
-            self.value_net = nn.Sequential(
-                nn.Linear(400, 200),
-                nn.ELU(),
-                nn.Linear(200, 100),
-                nn.ELU()
-            )
-            head_input_dim = 100
-
-        self.mean_layer = nn.Linear(head_input_dim, self.num_actions)
+        self.net = nn.Sequential(
+            nn.Linear(self.num_observations, 400),
+            nn.ELU(),
+            nn.Linear(400, 200),
+            nn.ELU(),
+            nn.Linear(200, 100),
+            nn.ELU()
+        )
+        self.mean_layer = nn.Linear(100, self.num_actions)
         self.log_std_parameter = nn.Parameter(torch.zeros(self.num_actions))
-        self.value_layer = nn.Linear(head_input_dim, 1)
+        self.value_layer = nn.Linear(100, 1)
+        self._shared_output = None
 
     def act(self, inputs, role):
         if role == "policy":
@@ -112,24 +75,36 @@ class UACAblationModel(GaussianMixin, DeterministicMixin, Model):
             return DeterministicMixin.act(self, inputs, role)
 
     def compute(self, inputs, role):
-        features = self.shared_net(inputs["states"])
         if role == "policy":
-            policy_features = self.policy_net(features)
-            return self.mean_layer(policy_features), self.log_std_parameter, {}
+            self._shared_output = self.net(inputs["states"])
+            mean = 2 * torch.tanh(self.mean_layer(self._shared_output))
+            return mean, self.log_std_parameter, {}
+            
         elif role == "value":
-            value_features = self.value_net(features)
-            return self.value_layer(value_features), {}
+            if self._shared_output is not None and self._shared_output.shape[0] == inputs["states"].shape[0]:
+                shared_output = self._shared_output
+            else:
+                shared_output = self.net(inputs["states"])
+            self._shared_output = None  # Safely reset cache
+            return self.value_layer(shared_output), {}
 
 
 task = args_cli.task
-task_name = "flat_terrain" if task == "Isaac-Velocity-Flat-H1-v0" else "stair_terrain"
-gui = "nogui" if args_cli.headless == True else "gui"
-arch = args_cli.arch
-log_dir = f"ablation_2_{task_name}_{gui}_UAC_arch_depth_{arch}_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + f"_seed_{args_cli.seed}"
-
+if task == "Isaac-Velocity-Flat-H1-v0":
+    task_name = "flat_terrain" 
+elif task == "Isaac-Velocity-Stairway-H1-v0":
+    task_name = "stair_terrain"
+elif task == "Isaac-Box-H1-v0":
+    task_name = "box_terrain"
+elif task == "Isaac-Slope-H1-v0":
+    task_name = "slope_terrain"
+gui = "nogui" if args_cli.headless else "gui"
+log_dir = f"ablation3_{task_name}_UAC_{gui}_seed_{args_cli.seed}_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+checkpoint = args_cli.checkpoint
 
 @hydra_task_config(task, "skrl_cfg_entry_point")
 def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agent_cfg: dict):
+    set_seed(args_cli.seed)
 
     agent_cfg["trainer"]["close_environment_at_exit"] = False
     agent_cfg["seed"] = args_cli.seed
@@ -155,7 +130,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         "value_clip": 0.2,
         "clip_predicted_values": True,
         "entropy_loss_scale": 0.0,
-        "value_loss_scale": args_cli.value_loss_scale,
+        "value_loss_scale": 4.0,
         "kl_threshold": 0,
         "rewards_shaper": lambda rewards, *args, **kwargs: rewards * 0.01,
         "time_limit_bootstrap": False,
@@ -171,7 +146,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
             "checkpoint_interval": "auto",
             "wandb": True,
             "wandb_kwargs": {
-                "project": "Shared-Arch",
+                "project": "Shared-Arch-v1",
                 "name": log_dir,
             }
         }
@@ -182,13 +157,13 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     print(f"Running {log_dir}")
 
     models = {}
-    # Unified model handles both policy and value roles with separated branching depending on arch
-    model_inst = UACAblationModel(env.observation_space, env.action_space, device, arch=args_cli.arch)
-    models["policy"] = model_inst
-    models["value"] = model_inst
-
+    models["policy"] = Shared(env.observation_space, env.action_space, device)
+    models["value"] = models["policy"]
     memory = RandomMemory(memory_size=32, num_envs=env.num_envs, device=device)
     agent = PPO(models=models, memory=memory, cfg=ppo_agent_cfg, observation_space=env.observation_space, action_space=env.action_space, device=device)
+    if checkpoint:
+        agent.load(checkpoint)
+        print(f"Loaded checkpoint from {checkpoint}")
 
     trainer = SequentialTrainer(cfg=agent_cfg['trainer'], env=env, agents=agent)
     trainer.train()

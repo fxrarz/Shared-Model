@@ -1,6 +1,8 @@
 # Local Folders
-h1_flat/
 outputs/
+wandb/
+runs/
+figs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
