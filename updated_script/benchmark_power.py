@@ -1,4 +1,7 @@
-# python3 benchmark_power.py --arch DAC --terrain flat --warmup 20000 --device cuda:0 --batch_size 1 --num_runs 5000
+# python3 benchmark_power_v2.py --arch DAC --terrain flat --warmup 20000 --device cuda:0 --batch_size 1 --num_runs 5000
+# Optional longer window for more power samples: add --duration 30
+import warnings
+warnings.filterwarnings("ignore")
 
 import argparse
 import sys
@@ -7,19 +10,21 @@ import threading
 import numpy as np
 import torch
 import torch.nn as nn
-from skrl.models.torch import DeterministicMixin, GaussianMixin, Model
+from skrl.models.torch import GaussianMixin, DeterministicMixin, Model
 
 # ============================================================
 # Arguments
 # ============================================================
-parser = argparse.ArgumentParser(description="Dedicated Jetson Power Consumption Benchmark")
+parser = argparse.ArgumentParser(description="Dedicated Jetson Power Consumption Benchmark (policy-only)")
 parser.add_argument("--arch", type=str, default="UAC", choices=["DAC", "UAC"])
 parser.add_argument("--terrain", type=str, default="flat", choices=["flat", "stair"])
 parser.add_argument("--device", type=str, default="cuda:0", choices=["cpu", "cuda:0"])
-parser.add_argument("--batch_size", type=int, default=1, help="Batch size for model inputs")
+parser.add_argument("--batch_size", type=int, default=1, help="Batch size of the model input (observations per forward pass)")
 parser.add_argument("--num_runs", type=int, default=5000, help="Total inference loops for power sampling")
+parser.add_argument("--duration", type=float, default=0.0,
+                    help="If > 0, ignore --num_runs and run inference for this many seconds instead")
 parser.add_argument("--warmup", type=int, default=20000, help="Warmup iterations to stabilize thermal/clock state")
-parser.add_argument("--sample_interval", type=float, default=0.1, help="Power sampling interval in seconds")
+parser.add_argument("--sample_interval", type=float, default=0.5, help="Power sampling interval in seconds")
 args = parser.parse_args()
 
 # ============================================================
@@ -40,13 +45,16 @@ if args.device.startswith("cuda") and not torch.cuda.is_available():
     raise RuntimeError("CUDA requested but CUDA is not available.")
 device = torch.device(args.device)
 
-print("=== Jetson Power Consumption Benchmark ===")
+print("=== Jetson Power Consumption Benchmark (policy-only) ===")
 print(f"Architecture : {args.arch}")
 print(f"Terrain      : {args.terrain}")
 print(f"Device       : {device}")
 print(f"Batch Size   : {args.batch_size}")
 print(f"Warmup Runs  : {args.warmup:,}")
-print(f"Measured Runs: {args.num_runs:,}")
+if args.duration > 0:
+    print(f"Measured     : {args.duration} sec (duration mode)")
+else:
+    print(f"Measured Runs: {args.num_runs:,}")
 print(f"Sample Rate  : {args.sample_interval} sec\n")
 
 # ============================================================
@@ -73,20 +81,6 @@ class PolicyDAC(GaussianMixin, Model):
     def compute(self, inputs, role="policy"):
         return 2 * torch.tanh(self.net(inputs["states"])), self.log_std_parameter, {}
 
-class ValueDAC(DeterministicMixin, Model):
-    def __init__(self, observation_space, action_space, device):
-        Model.__init__(self, observation_space, action_space, device)
-        DeterministicMixin.__init__(self, clip_actions=False)
-        self.net = nn.Sequential(
-            nn.Linear(self.num_observations, 400), nn.ELU(),
-            nn.Linear(400, 200), nn.ELU(),
-            nn.Linear(200, 100), nn.ELU(),
-            nn.Linear(100, 1)
-        )
-
-    def compute(self, inputs, role="value"):
-        return self.net(inputs["states"]), {}
-
 class SharedUAC(GaussianMixin, DeterministicMixin, Model):
     def __init__(self, observation_space, action_space, device):
         Model.__init__(self, observation_space, action_space, device)
@@ -110,41 +104,41 @@ class SharedUAC(GaussianMixin, DeterministicMixin, Model):
             return self.value_layer(shared_output), {}
 
 # ============================================================
-# Instantiate Model
+# Instantiate Model (policy-only deployment workload for both)
 # ============================================================
 if args.arch == "DAC":
-    policy_model = PolicyDAC(obs_dim, act_dim, device).to(device)
-    models_to_bench = {"Policy": policy_model}
+    model = PolicyDAC(obs_dim, act_dim, device).to(device)
+    name = "Policy"
 else:
-    shared_model = SharedUAC(obs_dim, act_dim, device).to(device)
-    models_to_bench = {"Shared Policy": shared_model}
+    model = SharedUAC(obs_dim, act_dim, device).to(device)
+    name = "Shared Policy"
 
 # ============================================================
-# Input Setup & Execution Wrapper (Respects Batch Size)
+# Input Setup & Execution Wrapper
 # ============================================================
 dummy_inputs = {"states": torch.randn(args.batch_size, obs_dim, device=device)}
 
-def run_forward(model, name):
-    if "Shared" in name:
-        model.compute(dummy_inputs, role="policy")
-        model.compute(dummy_inputs, role="value")
-    else:
-        model.compute(dummy_inputs, role="policy")
+def run_forward(m):
+    # Identical workload for both architectures: one policy forward pass.
+    m.compute(dummy_inputs, role="policy")
 
 # ============================================================
-# Power Monitor Background Thread
+# Power Monitor Background Thread (timestamped samples)
 # ============================================================
 class PowerMonitor:
     def __init__(self, interval):
         self.interval = interval
         self.running = False
-        self.samples = []
+        self.samples = []  # list of (perf_counter timestamp, power in mW)
         self.thread = None
         self.jetson = None
 
     def start(self):
         print("Initializing jtop for power tracking...", flush=True)
-        self.jetson = jtop()
+        try:
+            self.jetson = jtop(interval=self.interval)
+        except TypeError:
+            self.jetson = jtop()  # older jtop without an interval argument
         self.jetson.start()
         time.sleep(0.5)
         self.running = True
@@ -158,10 +152,8 @@ class PowerMonitor:
             try:
                 if self.jetson is not None and self.jetson.ok():
                     power = self.jetson.power
-                    if power and "tot" in power:
-                        total = power["tot"]
-                        if "power" in total:
-                            self.samples.append(float(total["power"]))
+                    if power and "tot" in power and "power" in power["tot"]:
+                        self.samples.append((time.perf_counter(), float(power["tot"]["power"])))
             except Exception:
                 pass
             time.sleep(self.interval)
@@ -178,58 +170,61 @@ class PowerMonitor:
         print("Power monitor stopped.", flush=True)
 
 # ============================================================
-# Benchmark Execution Loop
+# Benchmark Execution
 # ============================================================
-for name, model in models_to_bench.items():
-    model.eval()
-    print(f"Target Model: {name}")
+model.eval()
+print(f"Target Model: {name}")
 
-    # --- Warmup Phase ---
-    print(f"Executing Warmup ({args.warmup:,} iterations) ...", flush=True)
-    with torch.inference_mode():
-        for _ in range(args.warmup):
-            run_forward(model, name)
-    if device.type == "cuda":
-        torch.cuda.synchronize()
-    print("Warmup complete. Hardware state stabilized.\n", flush=True)
+# --- Warmup ---
+print(f"Executing Warmup ({args.warmup:,} iterations) ...", flush=True)
+with torch.inference_mode():
+    for _ in range(args.warmup):
+        run_forward(model)
+if device.type == "cuda":
+    torch.cuda.synchronize()
+print("Warmup complete.\n", flush=True)
 
-    # --- Start Power Monitoring ---
-    monitor = PowerMonitor(args.sample_interval)
-    monitor.start()
-    time.sleep(1.0)  # Allow sampling thread to establish a steady baseline
+# --- Start monitor, let it settle (settle samples are discarded by the timestamp window) ---
+monitor = PowerMonitor(args.sample_interval)
+monitor.start()
+time.sleep(1.0)
 
-    # --- Power-Measured Inference Loop ---
-    print(f"Running {args.num_runs:,} measured inference iterations...", flush=True)
-    start_time = time.perf_counter()
-
-    with torch.inference_mode():
-        for _ in range(args.num_runs):
-            run_forward(model, name)
-
-    if device.type == "cuda":
-        torch.cuda.synchronize()
-    elapsed = time.perf_counter() - start_time
-
-    # Let monitor capture tail stabilization for 1 second
-    time.sleep(1.0)
-    monitor.stop()
-
-    # --- Results & Aggregation ---
-    print(f"\n--- Power Results for {name} ---")
-    print(f"Total Execution Time : {elapsed:.4f} sec")
-    print(f"Power Samples Captured: {len(monitor.samples)}")
-
-    if monitor.samples:
-        samples = np.asarray(monitor.samples)
-        avg_mw = np.mean(samples)
-        min_mw = np.min(samples)
-        max_mw = np.max(samples)
-
-        print(f"Average Power Draw   : {avg_mw:.2f} mW ({avg_mw / 1000.0:.3f} W)")
-        print(f"Minimum Power Draw   : {min_mw:.2f} mW ({min_mw / 1000.0:.3f} W)")
-        print(f"Maximum Power Draw   : {max_mw:.2f} mW ({max_mw / 1000.0:.3f} W)")
+# --- Measured loop ---
+print("Running measured inference ...", flush=True)
+iters = 0
+t_start = time.perf_counter()
+with torch.inference_mode():
+    if args.duration > 0:
+        while time.perf_counter() - t_start < args.duration:
+            for _ in range(100):
+                run_forward(model)
+            iters += 100
     else:
-        print("WARNING: No power samples were collected by jtop.")
-    print()
+        for _ in range(args.num_runs):
+            run_forward(model)
+        iters = args.num_runs
+if device.type == "cuda":
+    torch.cuda.synchronize()
+t_end = time.perf_counter()
+elapsed = t_end - t_start
 
-print("DONE")
+monitor.stop()
+
+# --- Keep only samples taken inside the measured window ---
+window = [v for (t, v) in monitor.samples if t_start <= t <= t_end]
+
+print(f"\n--- Power Results for {name} ---")
+print(f"Iterations           : {iters:,}")
+print(f"Total Execution Time : {elapsed:.4f} sec")
+print(f"Power Samples (total): {len(monitor.samples)} | inside measured window: {len(window)}")
+
+if window:
+    samples = np.asarray(window)
+    avg_mw, min_mw, max_mw = np.mean(samples), np.min(samples), np.max(samples)
+    print(f"Average Power Draw   : {avg_mw:.2f} mW ({avg_mw / 1000.0:.3f} W)")
+    print(f"Minimum Power Draw   : {min_mw:.2f} mW ({min_mw / 1000.0:.3f} W)")
+    print(f"Maximum Power Draw   : {max_mw:.2f} mW ({max_mw / 1000.0:.3f} W)")
+else:
+    print("WARNING: No power samples fell inside the measured window. "
+          "Use --duration (e.g. 30) or a smaller --sample_interval.")
+print("\nDONE")

@@ -1,3 +1,6 @@
+import warnings
+warnings.filterwarnings("ignore")
+
 import argparse
 import time
 import numpy as np
@@ -13,7 +16,7 @@ parser.add_argument("--arch", type=str, default="UAC", choices=["DAC", "UAC"])
 parser.add_argument("--terrain", type=str, default="stair", choices=["flat", "stair"])
 parser.add_argument("--device", type=str, default="cuda:0", choices=["cpu", "cuda:0"])
 parser.add_argument("--num_runs", type=int, default=5000)
-parser.add_argument("--batch_size", type=int, default=100, help="Number of iterations per CUDA timing block")
+parser.add_argument("--block_size", type=int, default=100, help="Number of iterations per CUDA timing block")
 parser.add_argument("--warmup", type=int, default=500)
 parser.add_argument("--eval_mode", type=str, default="policy_only", choices=["policy_only", "policy_and_value"],
                     help="Deployment benchmarks should evaluate policy_only.")
@@ -164,20 +167,20 @@ for name, model in models_to_bench.items():
 
     with torch.inference_mode():
         if device.type == "cuda":
-            num_blocks = args.num_runs // args.batch_size
+            num_blocks = args.num_runs // args.block_size
             start_event = torch.cuda.Event(enable_timing=True)
             end_event = torch.cuda.Event(enable_timing=True)
 
             for _ in range(num_blocks):
                 start_event.record()
-                for _ in range(args.batch_size):
+                for _ in range(args.block_size):
                     run_forward(model, name)
                 end_event.record()
                 torch.cuda.synchronize()
 
                 # Average latency per forward pass in milliseconds
                 block_time_ms = start_event.elapsed_time(end_event)
-                latencies.extend([block_time_ms / args.batch_size] * args.batch_size)
+                latencies.extend([block_time_ms / args.block_size] * args.block_size)
         else:
             for _ in range(args.num_runs):
                 t0 = time.perf_counter()
