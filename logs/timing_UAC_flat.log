@@ -1,0 +1,280 @@
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2363 ms
+Median (P50)      : 1.2293 ms
+Tail Latency (P95): 1.2618 ms
+Tail Latency (P99): 1.2922 ms
+Maximum Latency   : 2.5049 ms
+Mean Throughput   : 808.88 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2443 ms
+Median (P50)      : 1.2374 ms
+Tail Latency (P95): 1.2736 ms
+Tail Latency (P99): 1.3037 ms
+Maximum Latency   : 3.5385 ms
+Mean Throughput   : 803.70 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2468 ms
+Median (P50)      : 1.2391 ms
+Tail Latency (P95): 1.2753 ms
+Tail Latency (P99): 1.3447 ms
+Maximum Latency   : 7.8037 ms
+Mean Throughput   : 802.08 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2536 ms
+Median (P50)      : 1.2468 ms
+Tail Latency (P95): 1.2795 ms
+Tail Latency (P99): 1.3118 ms
+Maximum Latency   : 3.5621 ms
+Mean Throughput   : 797.72 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2400 ms
+Median (P50)      : 1.2341 ms
+Tail Latency (P95): 1.2654 ms
+Tail Latency (P99): 1.2887 ms
+Maximum Latency   : 2.5133 ms
+Mean Throughput   : 806.48 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2502 ms
+Median (P50)      : 1.2363 ms
+Tail Latency (P95): 1.3249 ms
+Tail Latency (P99): 1.3507 ms
+Maximum Latency   : 7.4764 ms
+Mean Throughput   : 799.85 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2086 ms
+Median (P50)      : 1.2034 ms
+Tail Latency (P95): 1.2338 ms
+Tail Latency (P99): 1.2850 ms
+Maximum Latency   : 2.5714 ms
+Mean Throughput   : 827.43 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2458 ms
+Median (P50)      : 1.2393 ms
+Tail Latency (P95): 1.2687 ms
+Tail Latency (P99): 1.2946 ms
+Maximum Latency   : 2.5594 ms
+Mean Throughput   : 802.69 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2519 ms
+Median (P50)      : 1.2457 ms
+Tail Latency (P95): 1.2758 ms
+Tail Latency (P99): 1.2996 ms
+Maximum Latency   : 6.0958 ms
+Mean Throughput   : 798.80 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : UAC
+Terrain      : flat
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Shared Policy] Parameters: 130,339 | Weight Size: 509.14 KB
+Total Parameters Evaluated: 130,339
+
+Benchmarking: Shared Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Shared Policy ---
+Mean Latency      : 1.2505 ms
+Median (P50)      : 1.2430 ms
+Tail Latency (P95): 1.2778 ms
+Tail Latency (P99): 1.3130 ms
+Maximum Latency   : 2.2102 ms
+Mean Throughput   : 799.71 Hz
+Resident Weight Memory : 512.50 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 516.50 KB
+
+DONE

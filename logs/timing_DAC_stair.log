@@ -1,0 +1,280 @@
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2323 ms
+Median (P50)      : 1.2262 ms
+Tail Latency (P95): 1.2572 ms
+Tail Latency (P99): 1.2790 ms
+Maximum Latency   : 2.7044 ms
+Mean Throughput   : 811.50 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2377 ms
+Median (P50)      : 1.2305 ms
+Tail Latency (P95): 1.2658 ms
+Tail Latency (P99): 1.2959 ms
+Maximum Latency   : 3.6508 ms
+Mean Throughput   : 807.95 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2407 ms
+Median (P50)      : 1.2344 ms
+Tail Latency (P95): 1.2641 ms
+Tail Latency (P99): 1.2878 ms
+Maximum Latency   : 8.0554 ms
+Mean Throughput   : 806.02 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2384 ms
+Median (P50)      : 1.2315 ms
+Tail Latency (P95): 1.2656 ms
+Tail Latency (P99): 1.2985 ms
+Maximum Latency   : 3.5091 ms
+Mean Throughput   : 807.50 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2399 ms
+Median (P50)      : 1.2332 ms
+Tail Latency (P95): 1.2645 ms
+Tail Latency (P99): 1.2970 ms
+Maximum Latency   : 2.9485 ms
+Mean Throughput   : 806.55 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2429 ms
+Median (P50)      : 1.2366 ms
+Tail Latency (P95): 1.2675 ms
+Tail Latency (P99): 1.2920 ms
+Maximum Latency   : 7.6429 ms
+Mean Throughput   : 804.57 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2270 ms
+Median (P50)      : 1.2226 ms
+Tail Latency (P95): 1.2541 ms
+Tail Latency (P99): 1.2786 ms
+Maximum Latency   : 11.6166 ms
+Mean Throughput   : 814.98 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2081 ms
+Median (P50)      : 1.2015 ms
+Tail Latency (P95): 1.2334 ms
+Tail Latency (P99): 1.2694 ms
+Maximum Latency   : 8.8321 ms
+Mean Throughput   : 827.76 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.2103 ms
+Median (P50)      : 1.2033 ms
+Tail Latency (P95): 1.2332 ms
+Tail Latency (P99): 1.2775 ms
+Maximum Latency   : 2.5176 ms
+Mean Throughput   : 826.23 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE
+=== Pure Inference Timing + Memory Benchmark ===
+Architecture : DAC
+Terrain      : stair
+Device       : cuda:0
+Total Runs   : 30000
+Warmup Runs  : 20000
+Eval Mode    : policy_only
+
+Model [Policy] Parameters: 205,038 | Weight Size: 800.93 KB
+Total Parameters Evaluated: 205,038
+
+Benchmarking: Policy
+Warmup (20000 iterations) ...
+Warmup complete.
+
+Running 30000 timed iterations ...
+--- Results for Policy ---
+Mean Latency      : 1.3341 ms
+Median (P50)      : 1.3436 ms
+Tail Latency (P95): 1.4051 ms
+Tail Latency (P99): 1.6193 ms
+Maximum Latency   : 2.2100 ms
+Mean Throughput   : 749.59 Hz
+Resident Weight Memory : 804.00 KB
+Peak Activation Memory : 4.00 KB
+Peak Total Model Memory: 808.00 KB
+
+DONE

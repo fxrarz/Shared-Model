@@ -1,0 +1,270 @@
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 35.6856 sec
+Power Samples (total): 74 | inside measured window: 72
+Average Power Draw   : 3453.88 mW (3.454 W)
+Minimum Power Draw   : 3300.00 mW (3.300 W)
+Maximum Power Draw   : 3907.00 mW (3.907 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 35.4973 sec
+Power Samples (total): 73 | inside measured window: 70
+Average Power Draw   : 3537.91 mW (3.538 W)
+Minimum Power Draw   : 3416.00 mW (3.416 W)
+Maximum Power Draw   : 3640.00 mW (3.640 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.6796 sec
+Power Samples (total): 72 | inside measured window: 70
+Average Power Draw   : 3591.47 mW (3.591 W)
+Minimum Power Draw   : 2208.00 mW (2.208 W)
+Maximum Power Draw   : 3714.00 mW (3.714 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.6988 sec
+Power Samples (total): 72 | inside measured window: 69
+Average Power Draw   : 3639.58 mW (3.640 W)
+Minimum Power Draw   : 3456.00 mW (3.456 W)
+Maximum Power Draw   : 3753.00 mW (3.753 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 35.2006 sec
+Power Samples (total): 73 | inside measured window: 71
+Average Power Draw   : 3632.49 mW (3.632 W)
+Minimum Power Draw   : 2290.00 mW (2.290 W)
+Maximum Power Draw   : 3720.00 mW (3.720 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.7068 sec
+Power Samples (total): 72 | inside measured window: 70
+Average Power Draw   : 3662.97 mW (3.663 W)
+Minimum Power Draw   : 2249.00 mW (2.249 W)
+Maximum Power Draw   : 3753.00 mW (3.753 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.5159 sec
+Power Samples (total): 71 | inside measured window: 69
+Average Power Draw   : 3641.67 mW (3.642 W)
+Minimum Power Draw   : 2252.00 mW (2.252 W)
+Maximum Power Draw   : 3720.00 mW (3.720 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.0175 sec
+Power Samples (total): 70 | inside measured window: 67
+Average Power Draw   : 3670.87 mW (3.671 W)
+Minimum Power Draw   : 3496.00 mW (3.496 W)
+Maximum Power Draw   : 3947.00 mW (3.947 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 35.0766 sec
+Power Samples (total): 73 | inside measured window: 71
+Average Power Draw   : 3692.51 mW (3.693 W)
+Minimum Power Draw   : 3456.00 mW (3.456 W)
+Maximum Power Draw   : 4212.00 mW (4.212 W)
+
+DONE
+=== Jetson Power Consumption Benchmark (policy-only) ===
+Architecture : DAC
+Terrain      : flat
+Device       : cuda:0
+Batch Size   : 1
+Warmup Runs  : 20,000
+Measured Runs: 30,000
+Sample Rate  : 0.5 sec
+
+Target Model: Policy
+Executing Warmup (20,000 iterations) ...
+Warmup complete.
+
+Initializing jtop for power tracking...
+Power monitor active.
+Running measured inference ...
+Power monitor stopped.
+
+--- Power Results for Policy ---
+Iterations           : 30,000
+Total Execution Time : 34.5525 sec
+Power Samples (total): 71 | inside measured window: 69
+Average Power Draw   : 3664.94 mW (3.665 W)
+Minimum Power Draw   : 2331.00 mW (2.331 W)
+Maximum Power Draw   : 3760.00 mW (3.760 W)
+
+DONE
