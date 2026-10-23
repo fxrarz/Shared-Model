@@ -6,7 +6,6 @@ parser = argparse.ArgumentParser(description="Train an RL agent with skrl.")
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default="Isaac-Slope-H1-v0", help="Name of the task.")
 parser.add_argument("--seed", type=int, default=42, help="Seed used for the environment")
-parser.add_argument("--checkpoint", type=str, default=None, help="Checkpoint to load")
 
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
@@ -17,6 +16,7 @@ simulation_app = app_launcher.app
 
 import gymnasium as gym
 import os
+import re
 import random
 from datetime import datetime
 from packaging import version
@@ -88,8 +88,17 @@ elif task == "Isaac-Box-H1-v0":
 elif task == "Isaac-Slope-H1-v0":
     task_name = "slope_terrain"
 gui = "nogui" if args_cli.headless else "gui"
-log_dir = f"ablation3_{task_name}_DAC_{gui}_seed_{args_cli.seed}_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-checkpoint = args_cli.checkpoint
+log_dir = f"ablation3_updated_{task_name}_DAC_{gui}_seed_{args_cli.seed}_" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+folders = os.listdir("./runs")
+seed = str(args_cli.seed)
+if 'Slope' in task:
+    match = f"flat_terrain_DAC_nogui_seed_{seed}"
+    checkpoint = 'runs/' + [f for f in folders if re.match(rf"^{match}", f)][0] + '/checkpoints/best_agent.pt'
+if 'Box' in task:
+    match = f"stair_terrain_DAC_nogui_seed_{seed}"
+    checkpoint = 'runs/' + [f for f in folders if re.match(rf"^{match}", f)][0] + '/checkpoints/best_agent.pt'
+
 
 @hydra_task_config(task, "skrl_cfg_entry_point")
 def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agent_cfg: dict):
@@ -151,6 +160,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     }
     memory = RandomMemory(memory_size=32, num_envs=env.num_envs, device=device)
     agent = PPO(models=models, memory=memory, cfg=ppo_agent_cfg, observation_space=env.observation_space, action_space=env.action_space, device=device)
+    print(f"Loading checkpoint from {checkpoint}")
     if checkpoint:
         agent.load(checkpoint)
         print(f"Loaded checkpoint from {checkpoint}")

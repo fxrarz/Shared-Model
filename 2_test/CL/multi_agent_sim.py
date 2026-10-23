@@ -103,7 +103,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
                 send_msg(client_socket, response_data)
 
             if data.get('state') == 'step':
-                print("state step")
+#                print("state step")
                 action_list = data['action']
                 action_tensor = torch.tensor(action_list, dtype=torch.float32, device=device) 
                 next_obs, rewards, terminated, truncated, infos = env.step(action_tensor)

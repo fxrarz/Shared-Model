@@ -47,28 +47,34 @@ device = "cuda:0"
 class Shared(GaussianMixin, DeterministicMixin, Model):
     def __init__(self, observation_space, action_space, device):
         Model.__init__(self, observation_space, action_space, device)
-        GaussianMixin.__init__(self, clip_actions=False, clip_log_std=True, min_log_std=-5, max_log_std=2)
+        GaussianMixin.__init__(self, clip_actions=False, clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum")
         DeterministicMixin.__init__(self, clip_actions=False)
         self.net = nn.Sequential(
-            nn.Linear(self.num_observations, 400),
-            nn.ELU(),
-            nn.Linear(400, 200),
-            nn.ELU(),
-            nn.Linear(200, 100),
-            nn.ELU()
+            nn.Linear(self.num_observations, 400), nn.ELU(),
+            nn.Linear(400, 200), nn.ELU(),
+            nn.Linear(200, 100), nn.ELU()
         )
         self.mean_layer = nn.Linear(100, self.num_actions)
         self.log_std_parameter = nn.Parameter(torch.zeros(self.num_actions))
         self.value_layer = nn.Linear(100, 1)
+        self._shared_output = None
+    def act(self, inputs, role):
+        if role == "policy":
+            return GaussianMixin.act(self, inputs, role)
+        elif role == "value":
+            return DeterministicMixin.act(self, inputs, role)
     def compute(self, inputs, role):
         if role == "policy":
-            shared_output = self.net(inputs["states"])
-            mean = self.mean_layer(shared_output)
-            return (mean, self.log_std_parameter, {})
+            self._shared_output = self.net(inputs["states"])
+            mean = 2 * torch.tanh(self.mean_layer(self._shared_output))
+            return mean, self.log_std_parameter, {}
         elif role == "value":
-            shared_output = self.net(inputs["states"])
-            return (self.value_layer(shared_output), {})
-
+            if self._shared_output is not None and self._shared_output.shape[0] == inputs["states"].shape[0]:
+                shared_output = self._shared_output
+            else:
+                shared_output = self.net(inputs["states"])
+            self._shared_output = None
+            return self.value_layer(shared_output), {}
 
 # ============================================================
 # SEPARATE POLICY MODEL (DAC)
@@ -76,20 +82,16 @@ class Shared(GaussianMixin, DeterministicMixin, Model):
 class Policy(GaussianMixin, Model):
     def __init__(self, observation_space, action_space, device):
         Model.__init__(self, observation_space, action_space, device)
-        GaussianMixin.__init__(self, clip_actions=False, clip_log_std=True, min_log_std=-20, max_log_std=2)
+        GaussianMixin.__init__(self, clip_actions=False, clip_log_std=True, min_log_std=-20, max_log_std=2, reduction="sum")
         self.net = nn.Sequential(
-            nn.Linear(self.num_observations, 400),
-            nn.ELU(),
-            nn.Linear(400, 200),
-            nn.ELU(),
-            nn.Linear(200, 100),
-            nn.ELU(),
+            nn.Linear(self.num_observations, 400), nn.ELU(),
+            nn.Linear(400, 200), nn.ELU(),
+            nn.Linear(200, 100), nn.ELU(),
             nn.Linear(100, self.num_actions)
         )
         self.log_std_parameter = nn.Parameter(torch.zeros(self.num_actions))
     def compute(self, inputs, role):
-        mean = self.net(inputs["states"])
-        return mean, self.log_std_parameter, {}
+        return 2 * torch.tanh(self.net(inputs["states"])), self.log_std_parameter, {}
 
 # ============================================================
 # SEPARATE VALUE MODEL (DAC)
@@ -99,12 +101,9 @@ class Value(DeterministicMixin, Model):
         Model.__init__(self, observation_space, action_space, device)
         DeterministicMixin.__init__(self, clip_actions=False)
         self.net = nn.Sequential(
-            nn.Linear(self.num_observations, 400),
-            nn.ELU(),
-            nn.Linear(400, 200),
-            nn.ELU(),
-            nn.Linear(200, 100),
-            nn.ELU(),
+            nn.Linear(self.num_observations, 400), nn.ELU(),
+            nn.Linear(400, 200), nn.ELU(),
+            nn.Linear(200, 100), nn.ELU(),
             nn.Linear(100, 1)
         )
     def compute(self, inputs, role):

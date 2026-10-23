@@ -206,29 +206,45 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     
     # reset
     obs, _ = env.reset()
-    total_rewards = []    
+    total_rewards = []
+    terminated_msg = None
     for timestep in range(total_timesteps):
         # act
         with torch.no_grad():
-            action = agent.act(obs, timestep=timestep, timesteps=total_timesteps)[0]
+#            action = agent.act(obs, timestep=timestep, timesteps=total_timesteps)[0]
+#            print(action)
+
+            outputs = agent.act(obs, timestep=timestep, timesteps=1000)
+            actions = outputs[-1].get("mean_actions", outputs[0])  # deterministic action
 
         # step
-        action = torch.tensor(action, dtype=torch.float32, device=device) 
+        action = torch.tensor(actions, dtype=torch.float32, device=device) 
         next_obs, rewards, terminated, truncated, infos = env.step(action)
         total_rewards.append(rewards[0].item())
+        if terminated.any() or truncated.any():
+            terminated_msg = f"Terminated at {timestep+1}"
+            print(terminated_msg)
+            break
 
         # store
-        with torch.no_grad():
-            agent.record_transition(
-                states=obs, actions=action, rewards=rewards,
-                next_states=next_obs, terminated=terminated,
-                truncated=truncated, infos={},
-                timestep=timestep, timesteps=total_timesteps,
-            )
-        agent.post_interaction(timestep=timestep, timesteps=total_timesteps)
+#        with torch.no_grad():
+#            agent.record_transition(
+#                states=obs, actions=action, rewards=rewards,
+#                next_states=next_obs, terminated=terminated,
+#                truncated=truncated, infos={},
+#                timestep=timestep, timesteps=total_timesteps,
+#            )
+#        agent.post_interaction(timestep=timestep, timesteps=total_timesteps)
         obs = next_obs
-    print(f'Running: ', log_dir)
-    print('Total reward: ', sum(total_rewards))
+    run_msg = f"Running: {log_dir}"
+    reward_msg = f"Total reward: {sum(total_rewards)}"
+    print(run_msg)
+    print(reward_msg)
+    with open("logs/ablation3_reward.log", "a") as f:
+        if terminated_msg is not None:
+            f.write(f"{run_msg}\n{reward_msg}\n{terminated_msg}\n---\n")
+        else:
+            f.write(f"{run_msg}\n{reward_msg}\nTerminated at {max_steps}\n---\n")
     env.close()
 
 if __name__ == "__main__":

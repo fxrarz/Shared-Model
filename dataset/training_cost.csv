@@ -1,0 +1,21 @@
+,Terrain,Arch.,Seed,Run,Training time (min),Peak GPU VRAM (%),Peak process RAM (GiB),Peak host RAM (%)
+0,Flat,DAC,42,[ala5prnd](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/ala5prnd),18.4,50.71,4.82,62.01
+1,Flat,DAC,123,[d50lwydl](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/d50lwydl),18.43,50.71,4.81,62.7
+2,Flat,DAC,456,[07wbk0ri](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/07wbk0ri),18.33,50.71,4.81,62.7
+3,Flat,DAC,789,[96mdzl30](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/96mdzl30),18.35,50.71,4.83,62.46
+4,Flat,DAC,999,[hf65nw84](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/hf65nw84),17.92,50.71,4.81,62.88
+5,Flat,UAC,42,[54ntbprk](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/54ntbprk),15.88,49.63,4.81,62.91
+6,Flat,UAC,123,[23zp55od](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/23zp55od),15.82,49.61,4.84,62.58
+7,Flat,UAC,456,[ojfjurhs](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/ojfjurhs),15.65,49.63,4.83,62.92
+8,Flat,UAC,789,[i9kj5fae](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/i9kj5fae),15.88,49.63,4.82,63.47
+9,Flat,UAC,999,[oik21570](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/oik21570),15.9,49.63,4.81,63.33
+10,Stair,DAC,42,[q3t3tk6u](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/q3t3tk6u),67.17,57.84,4.97,61.16
+11,Stair,DAC,123,[1al47x6d](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/1al47x6d),66.87,57.06,4.96,62.16
+12,Stair,DAC,456,[vnsyg0p6](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/vnsyg0p6),69.13,58.26,4.97,64.14
+13,Stair,DAC,789,[76uei17p](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/76uei17p),71.38,57.06,4.96,68.09
+14,Stair,DAC,999,[9oom87oi](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/9oom87oi),70.95,57.84,4.98,64.14
+15,Stair,UAC,42,[gnuq8f1c](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/gnuq8f1c),61.43,57.94,4.96,65.92
+16,Stair,UAC,123,[ovc71d55](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/ovc71d55),60.98,57.16,4.99,68.47
+17,Stair,UAC,456,[jo1lficy](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/jo1lficy),61.37,58.35,4.97,67.89
+18,Stair,UAC,789,[cu0nhgvc](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/cu0nhgvc),59.33,57.16,4.96,63.45
+19,Stair,UAC,999,[towdqewn](https://wandb.ai/my-phd-research/Shared-Arch-v1/runs/towdqewn),61.02,57.94,4.97,63.61
